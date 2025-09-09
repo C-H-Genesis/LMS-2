@@ -1,0 +1,35 @@
+.courses-container {
+   padding: 0 20px;
+  margin: 40px auto 0;
+  align-items: center;
+  
+}
+
+.courses-container h2 {
+  color: #0d3b66;
+  margin: 0;              /* remove auto margins since align-items centers */
+  font-size: 2rem;
+  text-align: center;
+  
+}
+
+.courses-table {
+  width: 60%;
+  border-collapse: collapse;
+   margin: 0 auto; 
+}
+
+.courses-table th,
+.courses-table td {
+  border: none;
+  padding: 0.5rem;
+}
+
+.courses-table th {
+  background-color: #f4f4f4;
+}
+
+.no-data {
+  margin-top: 1rem;
+  color: #666;
+}

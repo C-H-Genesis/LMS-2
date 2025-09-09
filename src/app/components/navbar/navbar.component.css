@@ -1,0 +1,230 @@
+/* -------------------------------------------------- */
+/* 1. Ensure the UL is a strict horizontal flex row   */
+/* -------------------------------------------------- */
+.nav-group {
+  display: flex !important;
+  flex-direction: row !important;  /* FORCE row layout */
+  flex-wrap: nowrap !important;    /* NO wrapping */
+  align-items: center !important;  /* vertical centering */
+  gap: 1rem !important;            /* even spacing */
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+/* -------------------------------------------------- */
+/* 2. Each <li> also flex to center its contents      */
+/* -------------------------------------------------- */
+.nav-group .nav-item {
+  display: flex !important;
+  align-items: center !important;
+  height: 70px !important;
+}
+
+/* -------------------------------------------------- */
+/* 3. Links inside get consistent padding & centering */
+/* -------------------------------------------------- */
+.nav-group .nav-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 0.75rem !important;
+  height: 56px !important;         /* match your navbar height */
+  color: #fff !important;
+  text-decoration: none !important;
+}
+.nav-group .nav-link:hover {
+  color: #e0e0e0 !important;
+}
+
+/* -------------------------------------------------- */
+/* 4. Profile icon always last, flush right          */
+/* -------------------------------------------------- */
+.nav-group .profile-item {
+  margin-left: auto !important;
+}
+
+/* -------------------------------------------------- */
+/* 5. Profile dropdown styling                       */
+/* -------------------------------------------------- */
+/* container relative so dropdown can position */
+.custom-navbar .profile-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+/* avatar size */
+.custom-navbar .avatar-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e5e7eb;
+}
+
+/* username / role next to avatar */
+.custom-navbar .profile-text .username {
+  font-weight: 500;
+  color: #1f2937;
+  line-height: 1;
+}
+.custom-navbar .profile-text .user-role {
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1;
+}
+
+/* caret styling */
+.custom-navbar .caret-icon {
+  transition: transform 0.2s ease;
+  color: #374151;
+}
+
+/* the actual dropdown menu */
+.custom-navbar .profile-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 220px;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 2000;
+}
+
+/* show when open */
+.custom-navbar .profile-wrapper.open .profile-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* rotate caret */
+.custom-navbar .profile-wrapper.open .caret-icon {
+  transform: rotate(180deg);
+}
+
+/* profile‐card header */
+.custom-navbar .profile-card {
+  background-color: #f9fafb;
+}
+
+/* divider line */
+.custom-navbar .profile-menu .dropdown-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 0.25rem 0;
+}
+
+/* items */
+.custom-navbar .dropdown-item {
+  display: block;
+  width: 100%;
+  color: #1f2937;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+.custom-navbar .dropdown-item:hover {
+  background-color: #f3f4f6;
+  color: #3b82f6;
+}
+
+/* -------------------------------------------------- */
+/* 6. Navbar container                                */
+/* -------------------------------------------------- */
+.custom-navbar {
+  background-color: #007bff !important;
+  height: 56px !important;
+  padding: 0 !important;
+}
+.custom-navbar .container-fluid {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 1rem !important;
+  height: 100% !important;
+}
+.custom-navbar .navbar-brand {
+  color: #fff !important;
+  font-size: 1.25rem !important;
+  font-weight: bold !important;
+  margin-right: 1rem !important;
+}
+/* Ensure the parent li is the positioning context */
+.custom-navbar .navbar-nav .profile-item {
+  position: relative;
+}
+
+/* Override Bootstrap’s popper-based positioning so the menu sits just below the toggle */
+.custom-navbar .profile-item .dropdown-menu {
+  position: absolute !important;
+  top: 100% !important;         /* flush below the nav-link */
+  left: auto !important;        /* align to the right edge of its parent */
+  right: 0 !important;
+  margin-top: 0.25rem;          /* small gap for breathing room */
+  transform: none !important;   /* remove any Popper.js translate */
+  will-change: none !important; /* disable popper optimizations */
+  z-index: 1050;                /* above the navbar */
+}
+
+/* the little circle avatar used both in toggle & in menu */
+.avatar-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* the blue gradient header in your dropdown-menu */
+.profile-card {
+  background: linear-gradient(
+    135deg,
+    rgba(58, 123, 213, 1) 0%,
+    rgba(0, 210, 255, 1) 100%
+  );
+  padding: 1rem;
+}
+
+/* ensure the menu itself has rounded corners */
+.dropdown-menu {
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  min-width: 16rem;
+}
+.profile-text {
+  color: white;
+  text-size-adjust: 30px;
+}
+
+.username, .user-role {
+  color: white !important;
+}
+
+.avatar-initials {
+  background-color: #ffffff; /* White background */
+  color: #007bff;            /* LMS blue for text */
+  border-radius: 50%;
+  font-weight: bold;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border: 2px solid #007bff;
+}
+
+
+/* -------------------------------------------------- */
+/* 5. Responsive (optional)                           */
+/* -------------------------------------------------- */
+@media (max-width: 768px) {
+  .nav-group {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}

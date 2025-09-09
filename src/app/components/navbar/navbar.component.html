@@ -1,0 +1,122 @@
+<ng-container *ngIf="currentUrl !== '/' && currentUrl !== '/Home'">
+  <c-navbar class="custom-navbar">
+    <div class="container-fluid d-flex align-items-center">
+      <!-- 1) Brand on the left -->
+      <a class="navbar-brand text-white" routerLink="/Home"><i class="fa fa-book me-3"></i>LMS</a>
+
+      <!-- 2) Spacer pushes the <ul> to the right -->
+      <div class="flex-grow-1"></div>
+
+      <!-- 3) Single UL for links + profile -->
+      <ul class="navbar-nav nav-group">
+        <!-- Student Links -->
+        <ng-container *ngIf="userRole === 'Student'">
+          <li class="nav-item"><a cNavLink routerLink="/student-dashboard" class="nav-link">Home</a></li>
+          <li class="nav-item"><a cNavLink routerLink="/Time-Table" class="nav-link">Curriculum</a></li>
+          <li class="nav-item"><a cNavLink routerLink="/course-registration" class="nav-link">Course Reg</a></li>
+          <li class="nav-item"><a cNavLink routerLink="/student-Assignments" class="nav-link">Assignments</a></li>
+          <li class="nav-item"><a cNavLink routerLink="/result" class="nav-link">Result</a></li>
+        </ng-container>
+
+        <!-- Teacher Links -->
+        <ng-container *ngIf="userRole === 'Teacher'">
+          <li class="nav-item"><a cNavLink routerLink="/teacher-dashboard" class="nav-link">Home</a></li>
+          <li class="nav-item"><a cNavLink routerLink="/my-courses" class="nav-link">My Courses</a></li>
+          <li class="nav-item"><a cNavLink routerLink="/assignments" class="nav-link">Assignments</a></li>
+          <li class="nav-item"><a cNavLink routerLink="/submissions" class="nav-link">Submissions</a></li>
+        </ng-container>
+
+        <!-- Admin Links -->
+        <ng-container *ngIf="userRole === 'Admin'">
+          <li class="nav-item"><a cNavLink routerLink="/admin-dashboard" class="nav-link">Dashboard</a></li>
+          <li class="nav-item"><a cNavLink routerLink="/manage-users" class="nav-link">Users</a></li>
+          <li class="nav-item"><a cNavLink routerLink="/manage-courses" class="nav-link">Courses</a></li>
+          <li class="nav-item"><a cNavLink routerLink="/faculties" class="nav-link">Faculties</a></li>
+        </ng-container>
+
+        <!-- Finance Links -->
+        <ng-container *ngIf="userRole === 'Finance'">
+          <li class="nav-item"><a cNavLink routerLink="/finance-dashboard" class="nav-link">Home</a></li>
+        </ng-container>
+
+        <!-- Profile Dropdown (last item in same UL) -->
+     <!-- …inside your existing <ul class="navbar-nav nav-group"> … -->  
+          <li
+            class="nav-item profile-wrapper"
+            [class.open]="menuOpen"
+            (click)="toggleProfileMenu($event)"
+          >
+  <!-- Trigger: avatar/initials + username + caret -->
+  <a class="nav-link d-flex align-items-center gap-2 p-0" role="button">
+    <ng-container *ngIf="!avatarMissing && userAvatarUrl; else initialsTplNav">
+      <img
+        [src]="userAvatarUrl"
+        class="avatar-img me-2"
+        (error)="onAvatarError()"
+        alt="Avatar"
+      />
+    </ng-container>
+    <ng-template #initialsTplNav>
+      <div class="avatar-initials me-2">{{ userInitials }}</div>
+    </ng-template>
+
+    <div class="profile-text d-none d-md-block">
+      <div class="username">{{ userName }}</div>
+      <div class="user-role">{{ userRole }}</div>
+    </div>
+
+    <svg
+      class="caret-icon"
+      width="16" height="16" viewBox="0 0 24 24"
+      fill="none" xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M19 9L12 16L5 9"
+        stroke="#374151"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </a>
+
+  <!-- Dropdown menu -->
+  <div *ngIf="menuOpen" class="profile-menu">
+    <div class="profile-card d-flex align-items-center px-3 py-2">
+      <ng-container *ngIf="!avatarMissing && userAvatarUrl; else initialsTplCard">
+        <img
+          [src]="userAvatarUrl"
+          class="avatar-img me-3"
+          (error)="onAvatarError()"
+          alt="Avatar"
+        />
+      </ng-container>
+      <ng-template #initialsTplCard>
+        <div class="avatar-initials me-3">{{ userInitials }}</div>
+      </ng-template>
+      <div>
+        <div class="fs-5 fw-bold text-dark">{{ userName }}</div>
+        <div class="small text-muted">{{ userRole }}</div>
+      </div>
+    </div>
+
+    <hr class="dropdown-divider my-0" />
+    <a class="dropdown-item px-3 py-2" [routerLink]="getProfileLink()">
+      <i class="fa fa-user me-2"></i> My Profile
+    </a>
+    <a class="dropdown-item px-3 py-2">
+      <i class="fa fa-cog me-2"></i> Settings
+    </a>
+    <div class="dropdown-divider"></div>
+    <button class="dropdown-item px-3 py-2 text-start" (click)="logout()">
+      <i class="fa fa-sign-out-alt me-2"></i> Logout
+    </button>
+  </div>
+</li>
+
+
+
+      </ul>
+    </div>
+  </c-navbar>
+</ng-container>

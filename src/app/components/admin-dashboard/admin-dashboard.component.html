@@ -1,0 +1,26 @@
+<div class="dashboard-charts">
+  <div class="chart-card">
+    <h4> Users</h4>
+    <apx-chart
+    *ngIf="usersChartOptions"
+    [series]="usersChartOptions.series"
+    [chart]="usersChartOptions.chart"
+    [xaxis]="usersChartOptions.xaxis"
+    [title]="usersChartOptions.title"
+    [dataLabels]="usersChartOptions.dataLabels">
+  </apx-chart>
+
+  </div>
+
+  <div class="chart-card">
+    <h4>Enrollments</h4>
+    <apx-chart
+      *ngIf="enrollmentsChartOptions"
+      [series]="enrollmentsChartOptions.series"
+      [chart]="enrollmentsChartOptions.chart"
+      [xaxis]="enrollmentsChartOptions.xaxis"
+      [title]="enrollmentsChartOptions.title"
+      [dataLabels]="enrollmentsChartOptions.dataLabels">
+    </apx-chart>
+  </div>
+</div>

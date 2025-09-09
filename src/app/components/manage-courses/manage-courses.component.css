@@ -1,0 +1,257 @@
+/* ================================
+   Variables & Base Styles
+   ================================ */
+:root {
+  --primary:       #3498db;
+  --primary-dark:  #2980b9;
+  --secondary:     #7f8c8d;
+  --success:       #28a745;
+  --danger:        #e74c3c;
+  --danger-dark:   #c0392b;
+  --light-bg:      #f8f9fa;
+  --dark-bg:       #2c3e50;
+  --text-color:    #333;
+  --border-color:  #ddd;
+  --radius:        0.5rem;
+  --transition:    0.3s ease;
+  --shadow-light:  0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color);
+  background: var(--light-bg);
+}
+
+/* ================================
+   Container & Headings
+   ================================ */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+h1 {
+  text-align: center;
+  color: var(--dark-bg);
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+/* ================================
+   Alerts
+   ================================ */
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+.alert-danger {
+  background: var(--danger);
+  color: #fff;
+}
+.alert-info {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* ================================
+   Table Styling
+   ================================ */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+  box-shadow: var(--shadow-light);
+}
+.table th,
+.table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+.table thead {
+  background: var(--dark-bg);
+  color: #fff;
+}
+.table tbody tr:nth-child(even) {
+  background: #ffffff;
+}
+.table tbody tr:hover {
+  background: rgba(52, 152, 219, 0.1);
+}
+
+/* ================================
+   Buttons
+   ================================ */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--transition), transform 0.2s;
+}
+.btn:hover {
+  transform: translateY(-1px);
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-danger {
+  background: var(--primary);
+  color: #f3f4f5;
+}
+
+.btn-group {
+   gap: 0.5rem; 
+}
+
+
+/* ================================
+   Add Course Button
+   ================================ */
+.add-course-btn {
+  margin: 2rem auto;
+  display: block;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius);
+  transition: background var(--transition), color var(--transition);
+}
+.add-course-btn:hover {
+  background: #fff;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+
+/* ================================
+   Form Controls
+   ================================ */
+form {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-light);
+}
+.form-group {
+  margin-bottom: 1rem;
+}
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select {
+  width: 100%;
+  height: 40px;
+  padding: 0.5rem;
+  
+  
+}
+input:focus,
+select:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+.btn-success {
+  color: #fff;
+}
+.btn-secondary {
+  color: #fff;
+  margin-left: 1rem;
+}
+
+
+
+
+/* ================================
+   Modal Overlay & Content
+   ================================ */
+/* in your component or global styles */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1040;           /* ensure it sits *beneath* the modal */
+  pointer-events: none;    /* clicks pass through to the modal */
+}
+.modal {
+  z-index: 1050;           /* sits above the backdrop */
+}
+
+
+.modal-dialog {
+  margin-top: 10vh;
+}
+.modal.fade.show.d-block{
+  pointer-events: auto;
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  animation: fadeIn var(--transition);
+}
+
+.create-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: var(--secondary);
+  cursor: pointer;
+  transition: color var(--transition);
+}
+.create-close:hover {
+  color: var(--dark-bg);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================================
+   Responsive
+   ================================ */
+@media (max-width: 576px) {
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+  .modal-content {
+    padding: 1rem;
+  }
+}
+
+

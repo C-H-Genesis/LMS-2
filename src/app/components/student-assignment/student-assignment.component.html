@@ -1,0 +1,181 @@
+<div class="page-container">
+  <!-- 1) Assignment Table -->
+  <div class="table-container" *ngIf="assignments.length > 0; else noAssignments">
+    <h2>Available Assignments</h2>
+    <div *ngIf="loadingAssignments" class="status-message">
+      Loading assignments…
+    </div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+    <table class="assignment-table">
+      <thead>
+        <tr>
+          <th>Course</th>
+          <th>Title</th>
+          <th>Due Date</th>
+          <th>Score</th>
+          <th>FeedBack</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let assignment of assignments">
+          <td>{{ assignment.courseName }}</td>
+          <td>
+            <span class="link-like" (click)="selectAssignment(assignment)">
+              {{ assignment.title }}
+            </span>
+          </td>
+          <td>{{ assignment.dueDate | date: 'shortDate' }}</td>
+          <td> {{ assignment.gradeText || 'Not Graded' }}</td>
+          <td>
+            {{assignment.feedback}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noAssignments>
+    <p>No assignments found.</p>
+  </ng-template>
+
+  <!-- 2) Modal + Backdrop (must be exactly these classes!) -->
+  <div class="modal-backdrop" *ngIf="showModal && selectedAssignment">
+    <div class="custom-modal">
+      <div class="modal-header">
+        <h3>Assignment Details</h3>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- 2a) Assignment Details -->
+        <div class="assignment-details">
+          <h4>  {{ selectedAssignment.title }}</h4>
+          <p><strong>Course:</strong>  {{ selectedAssignment.courseName }}</p>
+          <p><strong>Due Date:</strong>  {{ selectedAssignment.dueDate | date: 'shortDate' }}</p>
+          <p><strong>Description:</strong>  {{ selectedAssignment.description }}</p>
+          
+
+          <!-- 2a-1) Attached File Link -->
+         <div *ngIf="selectedAssignment?.file">
+          <!-- 1) PDF or Image: offer both Preview & Download -->
+          <ng-container *ngIf="isPdfOrImage(selectedAssignment.file?.contentType ?? null)">
+            <button
+              *ngIf="isPdfOrImage(selectedAssignment.file?.contentType ?? null)"
+            class="btn-file-action btn-preview" 
+            (click)="previewAssignmentFile(
+              selectedAssignment.file?.contentType ?? null,
+              selectedAssignment.file?.content ?? null,
+              selectedAssignment.fileId ?? null)">
+
+              Preview File
+            </button>
+
+            <button
+            *ngIf="isPdfOrImage(selectedAssignment.file?.contentType ?? null)"
+            class="btn-file-action btn-download"
+              (click)="downloadAssignmentFile(
+              selectedAssignment.file?.fileName ?? null,
+              selectedAssignment.file?.contentType ?? null,
+              selectedAssignment.file?.content ?? null,
+              selectedAssignment.fileId ?? null)">
+              Download File
+            </button>
+          </ng-container>
+
+          <!-- 2) Office documents (.docx, .xlsx, .pptx): show only Download -->
+          <button
+            *ngIf="isOfficeDoc(selectedAssignment.file?.contentType ?? null)"
+              (click)="downloadAssignmentFile(
+              selectedAssignment.file?.fileName ?? null,
+              selectedAssignment.file?.contentType ?? null,
+              selectedAssignment.file?.content ?? null,
+              selectedAssignment.fileId ?? null
+            )"
+          >
+            Download File
+          </button>
+        </div>
+
+
+          <div *ngIf="
+          !selectedAssignment.file &&
+          selectedAssignment.writtenAssignment
+        "
+          >
+          <p><strong>Written Assignment:</strong></p>
+          <textarea
+            readonly
+            rows="8"
+            class="read-only-textarea"
+          >{{ selectedAssignment.writtenAssignment }}</textarea>
+        </div>
+
+        <hr />
+
+        <!-- 2b) “Submit Answer” Button -->
+        <div *ngIf="!showForm" class="submit-button-container">
+          <button class="btn-submit" (click)="beginSubmission()">Submit Answer</button>
+          <button class="btn-cancel" (click)="closeModal()">Close</button>
+        </div>
+
+        <!-- 2c) Submission Form -->
+        <div *ngIf="showForm" class="submission-container">
+          <h4>Submit Your Answer</h4>
+          <form [formGroup]="submissionForm" (ngSubmit)="submitAssignment()">
+            <div class="form-group">
+              <label>Course:</label>
+              <input
+                type="text"
+                formControlName="course"
+                [value]="selectedAssignment.courseName"
+                readonly
+              />
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" (change)="toggleUploadMode()" />
+                Upload File Instead of Writing
+              </label>
+            </div>
+
+            <!-- File Upload -->
+            <div class="form-group" *ngIf="isFileUpload">
+              <label>Select File</label>
+              <input type="file" (change)="onFileSelected($event)" />
+            </div>
+
+            <!-- Written Submission -->
+            <div class="form-group" *ngIf="!isFileUpload">
+              <label>Written Submission</label>
+              <textarea
+                rows="5"
+                formControlName="writtenSubmission"
+                placeholder="Write your response here..."
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button
+                type="submit"
+                class="btn-submit"
+                [disabled]="
+                  (!isFileUpload &&
+                    submissionForm.get('writtenSubmission')?.value.trim() === '') ||
+                  (isFileUpload && !selectedFile)
+                "
+              >
+                Submit
+              </button>
+              <button type="button" class="btn-cancel" (click)="cancelSubmission()">Cancel</button>
+            </div>
+
+            <div *ngIf="submitError" class="error">{{ submitError }}</div>
+            <div *ngIf="submitSuccess" class="success">{{ submitSuccess }}</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

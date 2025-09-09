@@ -1,0 +1,48 @@
+/* src/app/components/my-results/my-results.component.scss */
+.results-container {
+  max-width: 900px;
+  margin: 40px auto 0;    /* center container horizontally on the page */
+  padding: 0 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column; /* stack children vertically (header above table) */
+  align-items: center;    /* center header and table horizontally */
+  gap: 10px;               /* small spacing between header and table */
+  
+}
+
+.results-container h2 {
+  color: #0d3b66;
+  margin: 0;              /* remove auto margins since align-items centers */
+  font-size: 1.5rem;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Use a clearer selector for the actual table element */
+.results-container .table {
+  width: 70%;             /* make table bigger — change to 100% if you want full width */
+  border-collapse: collapse;
+  margin-top: 0;          /* no extra top gap — gap above handles spacing */
+}
+
+.table th,
+.table td {
+  padding: .6rem;
+  border: none;
+}
+
+.table th {
+  background: #f5f5f5;
+  text-align: left;
+  color: #466c97;
+}
+
+.spinner {
+  font-style: italic;
+}
+
+.empty {
+  margin-top: 1rem;
+  color: #666;
+}

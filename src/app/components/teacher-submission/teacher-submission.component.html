@@ -1,0 +1,110 @@
+<!-- src/app/components/teacher-submissions/teacher-submissions.component.html -->
+<div class="teacher-submissions-container">
+  <h2>Student Submissions</h2>
+  <div *ngIf="loading" class="loading">Loading submissions…</div>
+  <div *ngIf="!loading && submissions.length === 0" class="empty-state">
+    No submissions found.
+  </div>
+
+  <div *ngIf="!loading && submissions.length > 0" class="table-wrapper">
+    <table class="submissions-table">
+      <thead>
+        <tr>
+          <th>Assignment</th>
+          <th>Course</th>
+          <th>Student</th>
+          <th>Reg. Number</th>
+          <th>Submitted At</th>
+          <th>Answer</th>
+          <th>Score</th>
+          <th>Feedback</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of submissions">
+          <td>{{ s.assignmentTitle }}</td>
+          <td>{{ s.courseName }}</td>
+          <td>{{ s.studentName }}</td>
+          <td>{{ s.regNumber }}</td>
+          <td>{{ s.submittedAt | date:'short' }}</td>
+          <td>
+            <!-- If file present show buttons -->
+           <div class="btn-group">
+             <ng-container *ngIf="s.fileId; else written">
+                <button class="btn-action btn-download" (click)="downloadSubmissionFile(
+                    s.fileName ?? null,
+                    s.contentType ?? null,
+                    s.fileId 
+                )">
+                Download
+                </button>
+
+                <button class="btn-action btn-preview" (click)="previewSubmissionFile(
+                    s.contentType ?? null,
+                    null,
+                    s.fileId 
+                )">
+                Preview
+                </button>
+
+            </ng-container>
+           </div>
+            <ng-template #written>
+              <span class="written-text">{{ s.writtenSubmission }}</span>
+            </ng-template>
+          </td>
+            <td>
+            <!-- show the score or “–” if not graded yet -->
+            <span *ngIf="s.score != null; else notGraded">{{ s.score }}</span>
+            <ng-template #notGraded>–</ng-template>
+          </td>
+          <td>
+            <!-- truncate long feedback, or show “–” -->
+            <span *ngIf="s.feedback; else noFeedback">
+              {{ s.feedback.length > 30 ? (s.feedback | slice:0:30) + '…' : s.feedback }}
+            </span>
+            <ng-template #noFeedback>–</ng-template>
+          </td>
+          <!-- grade/edit button -->
+          <td>
+            <button class="btn-action btn-grade"
+                    (click)="openGradeModal(s)">
+              {{ s.score != null ? 'Edit' : 'Grade' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- Grading Modal -->
+<div class="modal-backdrop fade show" *ngIf="gradingModalVisible"></div>
+<div class="modal d-block" *ngIf="gradingModalVisible" tabindex="-1">
+  <div class="modal-dialog">
+    <form [formGroup]="gradeForm" (ngSubmit)="submitGrade()" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Grade: {{ currentSubmission?.studentName }}</h5>
+        <button type="button" class="btn-close" (click)="closeGradeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label>Score</label>
+          <input type="number" formControlName="score" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Feedback</label>
+          <textarea formControlName="feedback" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="closeGradeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm" [disabled]="gradeForm.invalid">
+          Save Grade
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

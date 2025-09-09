@@ -1,0 +1,256 @@
+<div  class="user-management-container">
+  <h2>User List</h2>
+<div class="filter-container">
+  <div class="filter-group">
+    <div class="filter-item">
+      <label for="roleFilter">Filter by Role:</label>
+      <select
+        id="roleFilter"
+        [(ngModel)]="selectedrole"
+        (change)="onRoleChange()"
+        name="role"
+      >
+        <option value="">All</option>
+        <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+      </select>
+    </div>
+
+    <div
+      *ngIf="selectedrole === 'Student'"
+      class="filter-item"
+    >
+      <label for="facultyFilter">Filter by Faculty:</label>
+      <select
+        id="facultyFilter"
+        [(ngModel)]="selectedFacultyId"
+        (ngModelChange)="onFacultyChange()"
+        name="faculty"
+      >
+        <option [ngValue]="null">All Faculties</option>
+        <option *ngFor="let f of faculties" [ngValue]="f.facultyId">
+          {{ f.facultyName }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="add-user-wrapper">
+    <a (click)="isCreatingUser = true" class="add-user-btn">
+      <i>➕</i> Add New
+    </a>
+  </div>
+</div>
+
+
+  <table>
+    <thead>
+      <tr>
+      <th style="width: 26%;">UserId</th>
+      <th style="width: 20%;">Name</th>
+      <th style="width: 20%;">Username</th>
+      <th style="width: 15%;">Role</th>
+      <th style="width: 20%;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.userId | slice:0:20 }}...</td>
+        <td>{{ user.fullName }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.userType }}</td>
+       <td>
+          <div class="btn-group" style="position: relative;">
+            <button type="button"
+                    class="more-btn btn "
+                    (click)="$event.stopPropagation(); openActionsDropdown(user)">
+              More ▾
+            </button>
+
+            <!-- custom class to avoid bootstrap display rules -->
+            <div class="custom-dropdown-menu"
+                *ngIf="actionsDropdownUserId === user.userId"
+                (click)="$event.stopPropagation()">
+              <button type="button" class="dropdown-item"
+                      (click)="actionsDropdownUserId = null; loadUsersById(user.userId)"
+                      [disabled]="!user.isActive">
+                View details
+              </button>
+
+              <button type="button" class="dropdown-item"
+                      (click)="actionsDropdownUserId = null; openAssignRolesModal(user)"
+                      [disabled]="!user.isActive">
+                Assign / Add Role
+              </button>
+            </div>
+
+            <button type="button"
+                  class="btn"
+                  [ngClass]="user.isActive ? 'btn-info' : 'btn-secondary'"
+                  (click)="toggleUserActive(user)"
+                  [title]="user.isActive ? 'Disable user' : 'Enable user'">
+            {{ user.isActive ? 'Disable' : 'Enable' }}
+          </button>
+          </div>
+        </td>
+
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Create New User Form -->
+<div *ngIf="isCreatingUser" class="modal-container" >
+  <span class=" ums-create-close" (click)="isCreatingUser = false">&times;</span>
+  <div class="ums-custom-modal">
+    <h2>Create New User</h2> 
+    <form (ngSubmit)="onSubmit()">
+      <div>
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" [(ngModel)]="user.fullName" name="fullName" required />
+      </div>
+
+      <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" [(ngModel)]="user.username" name="username" required />
+      </div>
+
+      <div>
+        <label for="password">Email:</label>
+        <input type="text" id="Email" [(ngModel)]="user.Email" name="Email" required />
+      </div>
+
+      <div>
+        <label for="role">Role:</label>
+        <select id="role" [(ngModel)]="user.role" name="role" required>
+          <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+        </select>
+      </div>
+
+      <div *ngIf="user.role === 'Student'">
+        <label for="faculty">Faculty:</label>
+        <select id="faculty" [(ngModel)]="user.facultyName" name="faculty" required>
+          <option value="">Select Faculty</option>
+          <option *ngFor="let f of faculties" [value]="f.facultyName">
+            {{ f.facultyName }}
+          </option>
+        </select>
+      </div>
+ 
+
+      <button class="create-submit" type="submit">Create User</button>
+      <button class="Create-cancel" type="button" (click)="isCreatingUser = false">Cancel</button>
+    </form>
+
+
+  </div>
+    
+</div>
+ 
+<div *ngIf="selectedUser && !showAssignRoles" class="modal-container">
+  <div class="ums-modal-box">
+    <span class="edit-close" (click)="closeModal()">&times;</span>
+
+    <!-- Header -->
+    <h2 *ngIf="!isEditingUser">User Info</h2>
+    <h2 *ngIf=" isEditingUser">Edit User</h2>
+
+    <!-- ▶️ View Mode -->
+    <ng-container *ngIf="!isEditingUser">
+      <p><strong>UserId:</strong>   {{ selectedUser.userId }}</p>
+      <p><strong>Username:</strong> {{ selectedUser.username }}</p>
+      <p><strong>Full Name:</strong>{{ selectedUser.fullName }}</p>
+      <p><strong>Email:</strong>    {{ selectedUser.email }}</p>
+      <p><strong>Phone:</strong>    {{ selectedUser.phoneNumber }}</p>
+      <p *ngIf="selectedUser.userType === 'Student'"><strong>Reg #:</strong>    {{ selectedUser.regNumber }}</p>
+      <p><strong>Role:</strong>     {{ selectedUser.userType }}</p>
+      <button class="edit-button" (click)="editMode()" [disabled]="!selectedUser?.isActive">Edit</button>
+    </ng-container>
+
+    <!-- 📝 Edit Mode -->
+    <ng-container *ngIf="isEditingUser">
+      <form (ngSubmit)="submitUpdatedUser()" #editForm="ngForm">
+        <div class="form-group">
+          <label>Full Name:</label>
+          <input type="text"
+                 [(ngModel)]="selectedUser.fullName"
+                 name="fullName"
+                 required />
+        </div>
+
+        <div class="form-group">
+          <label>Username:</label>
+          <input type="text"
+                 [(ngModel)]="selectedUser.username"
+                 name="username"
+                 required />
+        </div>
+
+        <div class="form-group">
+          <label>Email:</label>
+          <input type="text"
+                 [(ngModel)]="selectedUser.email"
+                 name="Email"
+                 required />
+        </div>
+
+        <div class="form-group">
+          <label>PhoneNumber:</label>
+          <input type="text"
+                 [(ngModel)]="selectedUser.phoneNumber"
+                 name="phoneNumber"
+                 required />
+        </div>
+
+        <div class="form-group" *ngIf="selectedUser.userType === 'Student'">
+          <label>Reg Number:</label>
+          <input type="text"
+                 [(ngModel)]="selectedUser.regNumber"
+                 name="regNumber"
+                 readonly />
+        </div>
+
+        <button type="submit">Update</button>
+        <button type="button" (click)="isEditingUser = false">
+          Cancel
+        </button>
+      </form>
+    </ng-container>
+  </div>
+</div>
+
+<!-- Assign Roles Modal -->
+<div *ngIf="showAssignRoles" class="ums-modal-container">
+  <div class="modal-box">
+    <span class="close" (click)="closeAssignRolesModal()">&times;</span>
+
+    <h3>Assign Role to {{ selectedUserForRoles?.fullName || selectedUserForRoles?.username }}</h3>
+
+    <div class="form-row">
+      <label for="roleSelect">Select Role</label>
+      <select id="roleSelect" [(ngModel)]="selectedRoleToAssign" name="roleSelect">
+        <option [ngValue]="null">-- Choose role --</option>
+        <option *ngFor="let r of assignableRoles()" [ngValue]="r">{{ r.roleName }}</option>
+     </select>
+
+      <button (click)="assignRole()" [disabled]="!selectedRoleToAssign">Assign</button>
+    </div>
+
+    <hr />
+
+    <div>
+      <h4>Roles assigned to user</h4>
+      <ul>
+       <li *ngFor="let r of userRoles">
+        {{ r.roleName }}
+        <button class="small" (click)="removeRoleById(r.roleId, r.roleName)">Remove</button>
+       </li>
+      </ul>
+      <div *ngIf="userRoles.length === 0">No roles assigned.</div>
+    </div>
+
+    <div style="margin-top: 12px;">
+      <button (click)="closeAssignRolesModal()">Close</button>
+    </div>
+  </div>
+</div>

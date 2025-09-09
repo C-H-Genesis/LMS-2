@@ -1,0 +1,90 @@
+<div class="faculties-container">
+  <h2>Faculties</h2>
+
+  <div class="controls">
+    <button class="btn-add" (click)="openAddFacultyModal()">
+      <i class="fa fa-plus"></i> Add New Faculty
+    </button>
+  </div>
+
+  <div class="table-wrapper" *ngIf="faculties?.length; else emptyState">
+    <table class="faculties-table">
+      <thead>
+        <tr>
+          <th>Faculty ID</th>
+          <th>Faculty Name</th>
+          <th>Faculty Code</th>
+          <th class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let f of faculties">
+          <td>{{ f.facultyId }}</td>
+          <td>{{ f.facultyName }}</td>
+          <td>{{ f.facultyCode }}</td>
+          <td>
+            <button class="btn-action btn-edit" (click)="openEditFacultyModal(f)">
+              <i class="fa fa-edit"></i> Edit
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="empty-state">No faculties found.</div>
+  </ng-template>
+</div>
+
+
+<!-- (unchanged) your table, “Add New” button, etc. -->
+
+<!-- Faculty Modal: always present, let Bootstrap handle backdrop and `show` class -->
+<div class="modal fade" id="facultyModal" tabindex="-1" aria-labelledby="facultyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form [formGroup]="form"
+          (ngSubmit)="showModal ? updateFaculty() : createFaculty()"
+          class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="facultyModalLabel">
+          {{ showModal ? 'Edit Faculty' : 'New Faculty' }}
+        </h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+
+      <input type="hidden" formControlName="facultyId">
+
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Faculty Name</label>
+          <input formControlName="facultyName"
+                 class="form-control"
+                 placeholder="e.g. Information Technology">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Faculty Code</label>
+          <input formControlName="facultyCode"
+                 class="form-control"
+                 maxlength="5"
+                 placeholder="e.g. BIT">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button"
+                class="btn btn-sm btn-secondary"
+                (click)="closeModal()">
+          Cancel
+        </button>
+        <button type="submit"
+                class="btn btn-sm btn-primary"
+                [disabled]="form.invalid">
+          {{ showModal ? 'Save Changes' : 'Create Faculty' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

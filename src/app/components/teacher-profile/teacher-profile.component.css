@@ -1,0 +1,105 @@
+.profile-container {
+  max-width: 960px;
+  margin: 2rem auto;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.edit-btn {
+  background-color: #728af7ea;
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.edit-btn:hover {
+  background-color: #728af7ea;
+}
+
+.change-password-card {
+  margin-top: 1rem;
+}
+
+.profile-actions {
+  margin-bottom: 0.5rem;
+}
+
+.form-grid,
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.save-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background-color: #43a047;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+/* profile.component.css */
+.save-btn {
+  background-color: #28a745;   /* your green—or any hex/RGB you prefer */
+  border-color:    #28a745;    /* match the border */
+  color:            #fff;      /* white text */
+}
+
+/* hover state for a little feedback */
+.save-btn:hover {
+  background-color: #218838;
+  border-color:    #1e7e34;
+}
+

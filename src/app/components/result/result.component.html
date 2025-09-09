@@ -1,0 +1,31 @@
+<!-- src/app/components/my-results/my-results.component.html -->
+<div class="results-container">
+  <h2>My Course Results</h2>
+
+  <div *ngIf="loading" class="spinner">
+    Loading…  
+  </div>
+
+  <table *ngIf="!loading && results.length > 0" class="table">
+    <thead>
+      <tr>
+        <th>Course Code</th>
+        <th>Course Name</th>
+        <th> Score</th>
+        <th>Grade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of results">
+        <td>{{ r.courseCode }}</td>
+        <td>{{ r.courseName }}</td>
+        <td>{{ r.averageScore }}</td>
+        <td>{{ r.letterGrade }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && results.length === 0" class="empty">
+    You have no results yet.
+  </div>
+</div>
