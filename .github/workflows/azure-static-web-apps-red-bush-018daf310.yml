@@ -19,26 +19,49 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Use Node.js 22.14.0
+
+      # ensure the runner uses Node 22.14.0 for our manual build
+      - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
           node-version: '22.14.0'
 
-      - name: Check node version
-        run: node --version
-      - name: Build And Deploy
+      - name: Show node & npm versions
+        run: |
+          node --version
+          npm --version
+
+      # Install & build the app locally in the runner (so Oryx won't need to)
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build app
+        run: npm run build --if-present
+
+      # Copy staticwebapp.config.json into the build output if it exists
+      - name: Copy SWA config into build output (if present)
+        run: |
+          BUILD_DIR="dist/SMS-LMS"
+          if [ -f staticwebapp.config.json ]; then
+            mkdir -p "$BUILD_DIR"
+            cp staticwebapp.config.json "$BUILD_DIR"/
+            echo "Copied staticwebapp.config.json into $BUILD_DIR"
+          else
+            echo "No staticwebapp.config.json found — skipping copy"
+          fi
+
+      # Deploy: skip the action's internal build and upload our pre-built app
+      - name: Build And Deploy (upload pre-built app)
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_BUSH_018DAF310 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "dist/SMS-LMS" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+          skip_app_build: true
+          app_location: "dist/SMS-LMS"   # <-- point at your app's built artifact folder
+          api_location: ""               # no functions folder in this repo (leave blank)
+          output_location: ""            # leave empty when skip_app_build is true
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -51,5 +74,3 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_BUSH_018DAF310 }}
           action: "close"
-
-
