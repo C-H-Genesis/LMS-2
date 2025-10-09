@@ -59,9 +59,9 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
           skip_app_build: true
-          app_location: "/"   # <-- point at your app's built artifact folder
-          api_location: ""               # no functions folder in this repo (leave blank)
-          output_location: "dist/SMS-LMS"            # leave empty when skip_app_build is true
+          app_location: "dist/SMS-LMS"  
+          api_location: ""               
+          output_location: ""           
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -74,4 +74,5 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_BUSH_018DAF310 }}
           action: "close"
+
 
