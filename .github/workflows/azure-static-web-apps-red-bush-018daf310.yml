@@ -41,7 +41,7 @@ jobs:
       
       - name: Copy SWA config into build output (if present)
         run: |
-          BUILD_DIR="dist/SMS-LMS"
+          BUILD_DIR="dist/sms-lms"
           if [ -f staticwebapp.config.json ]; then
             mkdir -p "$BUILD_DIR"
             cp staticwebapp.config.json "$BUILD_DIR"/
@@ -59,7 +59,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
           skip_app_build: true
-          app_location: "dist/SMS-LMS/browser"  
+          app_location: "dist/sms-lms/browser"  
           api_location: ""               
           output_location: ""           
 
@@ -74,6 +74,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_BUSH_018DAF310 }}
           action: "close"
+
 
 
 
