@@ -1,0 +1,32 @@
+{
+  "routes": {
+    "/": {},
+    "/Adminprofile": {},
+    "/Home": {},
+    "/Time-Table": {},
+    "/admin-dashboard": {},
+    "/assignments": {},
+    "/course-registration": {},
+    "/faculties": {},
+    "/fees": {},
+    "/finance-dashboard": {},
+    "/forgot-password": {},
+    "/grades": {},
+    "/learning-dashboard": {},
+    "/login": {},
+    "/manage-courses": {},
+    "/manage-users": {},
+    "/my-courses": {},
+    "/profile": {},
+    "/register": {},
+    "/reports": {},
+    "/reset-password": {},
+    "/result": {},
+    "/student-Assignments": {},
+    "/student-dashboard": {},
+    "/submissions": {},
+    "/teacher-dashboard": {},
+    "/teacherProfile": {},
+    "/unauthorized": {}
+  }
+}
