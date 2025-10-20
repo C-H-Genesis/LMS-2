@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:5183', // Development API URL
+    apiUrl: 'https://sms-backend-429639006001.us-central1.run.app/', // Development API URL
   };
   
