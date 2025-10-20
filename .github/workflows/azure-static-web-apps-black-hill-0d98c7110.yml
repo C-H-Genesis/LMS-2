@@ -20,7 +20,6 @@ jobs:
           submodules: true
           lfs: false
 
-      
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
@@ -31,17 +30,24 @@ jobs:
           node --version
           npm --version
 
-     
       - name: Install dependencies
         run: npm ci
 
-      - name: Build app
+      - name: Build app (production)
         run: npm run build --if-present
 
-      
+      - name: Show build output (debug)
+        run: |
+          echo "Listing dist folder(s):"
+          ls -la dist || true
+          ls -la dist/sms-lms || true
+          ls -la dist/sms-lms/browser || true
+          echo "Confirm index.html presence:"
+          if [ -f "dist/sms-lms/browser/index.html" ]; then echo "OK: dist/sms-lms/browser/index.html"; else echo "NOT FOUND: dist/sms-lms/browser/index.html"; fi
+
       - name: Copy SWA config into build output (if present)
         run: |
-          BUILD_DIR="dist/sms-lms"
+          BUILD_DIR="dist/sms-lms/browser"
           if [ -f staticwebapp.config.json ]; then
             mkdir -p "$BUILD_DIR"
             cp staticwebapp.config.json "$BUILD_DIR"/
@@ -50,18 +56,17 @@ jobs:
             echo "No staticwebapp.config.json found — skipping copy"
           fi
 
-    
-      - name: Build And Deploy (upload pre-built app)
+      - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_BUSH_018DAF310 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BLACK_HILL_0D98C7110 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
+          app_location: "dist/sms-lms/browser"
+          api_location: ""
+          output_location: ""
           skip_app_build: true
-          app_location: "dist/sms-lms/browser"  
-          api_location: ""               
-          output_location: ""           
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -72,11 +77,5 @@ jobs:
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_BUSH_018DAF310 }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BLACK_HILL_0D98C7110 }}
           action: "close"
-
-
-
-
-
-
