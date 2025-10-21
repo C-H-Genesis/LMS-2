@@ -33,7 +33,7 @@ import { ResultComponent } from './components/result/result.component';
 
 const routes: Routes = [
  {
-    path: 'Home',
+    path: 'home',
     loadChildren: () => import('./components/home/home.module').then(m => m.HomeModule)
   },
   { path: 'login', component: LoginComponent },
@@ -75,7 +75,7 @@ const routes: Routes = [
   { path: 'finance-dashboard', component: FinanceDashboardComponent, canActivate: [roleGuard], data: { role: 'Finance' } },
     // when someone hits the root, send them to /Home
  { path: 'unauthorized', component: UnauthorizedComponent },
-  { path: '**', redirectTo: 'Home' }
+  { path: '**', redirectTo: 'home' }
 
 ];
 
