@@ -43,7 +43,7 @@ export interface MonthlyUserStat {
 })
 
 export class AdminService {
-  private baseUrl = 'https://sms-backend-429639006001.us-central1.run.app/api/admin';
+  private baseUrl = 'https://sms-backend-svljydtyhq-uc.a.run.app/api/admin';
   
   
 

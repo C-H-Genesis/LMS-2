@@ -75,6 +75,7 @@ const routes: Routes = [
   { path: 'finance-dashboard', component: FinanceDashboardComponent, canActivate: [roleGuard], data: { role: 'Finance' } },
     // when someone hits the root, send them to /Home
  { path: 'unauthorized', component: UnauthorizedComponent },
+ { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' }
 
 ];

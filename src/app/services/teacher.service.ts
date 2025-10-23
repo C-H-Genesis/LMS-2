@@ -9,7 +9,7 @@ import { GradeSubmissionDto } from '../DTOs/GradeSubmissionDto';
   providedIn: 'root'
 })
 export class TeacherService {
-  private apiUrl = `${environment.apiUrl}/api`;
+  private apiUrl = `${environment.apiUrl}`;
   errorMessage: string | null = null;
   courses: any[] = [];
 

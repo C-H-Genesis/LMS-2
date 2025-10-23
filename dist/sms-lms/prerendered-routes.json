@@ -2,7 +2,6 @@
   "routes": {
     "/": {},
     "/Adminprofile": {},
-    "/Home": {},
     "/Time-Table": {},
     "/admin-dashboard": {},
     "/assignments": {},
@@ -12,6 +11,7 @@
     "/finance-dashboard": {},
     "/forgot-password": {},
     "/grades": {},
+    "/home": {},
     "/learning-dashboard": {},
     "/login": {},
     "/manage-courses": {},
