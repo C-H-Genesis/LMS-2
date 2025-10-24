@@ -43,7 +43,7 @@ export interface MonthlyUserStat {
 })
 
 export class AdminService {
-  private baseUrl = 'sms-backend-fxewhpb0a6euedfr.centralus-01.azurewebsites.net/api/admin';
+  private baseUrl = 'https://sms-backend-fxewhpb0a6euedfr.centralus-01.azurewebsites.net/api/admin';
   
   
 
