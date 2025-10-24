@@ -18,7 +18,7 @@ export interface Course {
 })
 export class StudentService {
   
-      private apiUrl = 'https://sms-backend-svljydtyhq-uc.a.run.app/api/Student'; // Replace with actual API base URL
+      private apiUrl = 'sms-backend-fxewhpb0a6euedfr.centralus-01.azurewebsites.net/api/Student'; // Replace with actual API base URL
 
       constructor(private http: HttpClient, private authService: AuthService) {}
 
